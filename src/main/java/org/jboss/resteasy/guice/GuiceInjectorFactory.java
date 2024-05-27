@@ -135,31 +135,31 @@ public class GuiceInjectorFactory implements InjectorFactory {
       }};
   }
 
-  private PropertyInjector createPropertyInjector() {
+  private PropertyInjector createPropertyInjector(final PropertyInjector resteasyPropertyInjector) {
     return new PropertyInjector() {
 
       @Override
       public CompletionStage<Void> inject(Object target, boolean unwrapAsync) {
         getInjectorOrFail().injectMembers(target);
-        return CompletableFuture.completedStage(null);
+        return resteasyPropertyInjector.inject(target, unwrapAsync);
       }
 
       @Override
       public CompletionStage<Void> inject(HttpRequest request, HttpResponse response, Object target,
           boolean unwrapAsync) throws Failure, WebApplicationException, ApplicationException {
         getChildInjectorOrFail(request, response).injectMembers(target);
-        return CompletableFuture.completedStage(null);
+        return resteasyPropertyInjector.inject(request, response, target, unwrapAsync);
       }};
   }
 
   @Override
   public PropertyInjector createPropertyInjector(Class resourceClass, ResteasyProviderFactory factory) {
-    return createPropertyInjector();
+    return createPropertyInjector(InjectorFactoryImpl.INSTANCE.createPropertyInjector(resourceClass, factory));
   }
 
   @Override
   public PropertyInjector createPropertyInjector(ResourceClass resourceClass, ResteasyProviderFactory providerFactory) {
-    return createPropertyInjector();
+    return createPropertyInjector(InjectorFactoryImpl.INSTANCE.createPropertyInjector(resourceClass, providerFactory));
   }
 
   @Override
