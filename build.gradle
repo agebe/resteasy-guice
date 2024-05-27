@@ -6,7 +6,7 @@ plugins {
   id 'com.palantir.git-version' version '3.0.0'
 }
 
-project.version '0.1.0'
+project.version '0.2.0-SNAPSHOT'
 group = 'io.github.agebe'
 
 repositories {
@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'org.jboss.resteasy:resteasy-core:6.2.8.Final'
+  implementation 'org.jboss.resteasy:resteasy-core:6.2.9.Final'
   implementation 'com.google.inject:guice:7.0.0'
 }
 
